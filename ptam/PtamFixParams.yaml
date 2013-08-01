@@ -22,20 +22,29 @@ GLWindowMenu_mgvnMenuTextOffset: 20
 InitLevel: 1
 MaxKFDistWiggleMult: 1
 MaxPatchesPerFrame: 300
-MaxKF: 15
+MaxKF: 60
 parent_frame: world
 TrackingQualityFoundPixels: 50
 UseKFPixelDist: True
 NoLevelZeroMapPoints: True
 FASTMethod: OAST16
 MaxStereoInitLoops: 4
+#AutoInit: True
 AutoInitPixel: 20
+TrackingQualityGood: 0.4
+TrackingQualityLost: 0.3
 
-# --- bluefox - low distort lens  --- 
-Cam_fx: 0.795574
-Cam_fy: 1.25149
-Cam_cx: 0.50417
-Cam_cy: 0.51687
-Cam_s: 0.482014
+# ---- 640x 480
+#Cam_fx: 0.500566 #0.500048 #0.495048 #1.08415
+#Cam_fy: 0.664454 #0.666893 #0.660879 #1.43825
+#Cam_cx: 0.522779 #0.527562 #0.519031 #0.529987
+#Cam_cy: 0.479807 #0.492847 #0.495085 #0.484825
+#Cam_s:  0.985599 #0.98241 # 0.983346 #0.960662
 # -----------------------------------
-
+# --- 320x240 
+Cam_fx: 0.499892
+Cam_fy: 0.668542
+Cam_cx: 0.5141
+Cam_cy: 0.479657
+Cam_s:  0.982847 
+  
