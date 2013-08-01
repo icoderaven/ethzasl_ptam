@@ -12,6 +12,7 @@ dependencies/libcvd/lib/
 git_checkedout
 sources/
 lib/
+build/
 ptam/.cproject
 ptam/.project
 ptam/bin/
