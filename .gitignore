@@ -8,6 +8,10 @@ dependencies/libcvd/bin/
 dependencies/libcvd/build/
 dependencies/libcvd/include/
 dependencies/libcvd/lib/
+*.orig
+git_checkedout
+sources/
+lib/
 ptam/.cproject
 ptam/.project
 ptam/bin/
