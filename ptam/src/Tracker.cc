@@ -1332,6 +1332,10 @@ void Tracker::AssessTrackingQuality()
     {
       mAutoreset=true;
       ROS_WARN_STREAM("Forcing map reset because of bad tracking! Autoreset set to " << mAutoreset);
+      //KSS{
+      //Publish on our topic to specify that a reset has been requested
+      pub_reset_.publish(std_msgs::Empty());
+      //}
     }
     //}
     mnLostFrames++;
