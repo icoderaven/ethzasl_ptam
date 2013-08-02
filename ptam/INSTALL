@@ -4,7 +4,7 @@ git clone git://github.com/icoderaven/ethzasl_ptam.git temp
 mv temp/.git ethzasl_ptam/.git
 rm -rf temp
 cd ethzasl_ptam
-git checkout origin/my_commits
+git checkout origin/master
 git reset --hard
 hg revert ./
 #and then proceed to 

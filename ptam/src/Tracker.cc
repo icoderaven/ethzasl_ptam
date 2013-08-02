@@ -35,7 +35,8 @@ Tracker::Tracker(ImageRef irVideoSize, const ATANCamera &c, Map &m, MapMaker &mm
 				                          mMapMaker(mm),
 				                          mCamera(c),
 				                          mRelocaliser(mMap, mCamera),
-				                          mirSize(irVideoSize)
+				                          mirSize(irVideoSize),
+				                          nh_("ptam")
 {
   mCurrentKF.reset(new KeyFrame);
   mCurrentKF->bFixed = false;
@@ -54,6 +55,9 @@ Tracker::Tracker(ImageRef irVideoSize, const ATANCamera &c, Map &m, MapMaker &mm
   mpSBILastFrame = NULL;
   mpSBIThisFrame = NULL;
 
+  //KSS{
+  pub_reset_ = nh_.advertise<std_msgs::Empty> ("reset", 1);
+  //}
   // Most of the initialisation is done in Reset()
   Reset();
 }
@@ -72,7 +76,9 @@ void Tracker::Reset()
 #ifndef WIN32
     usleep(10);
 #else
-  Sleep(1);
+  //KSS - Reducing this time interval, because I don't see any harm
+  //Sleep(1);
+  Sleep(0.1);
 #endif
 
   mbDidCoarse = false;
@@ -393,6 +399,10 @@ void Tracker::GUICommandHandler(string sCommand, string sParams)  // Called by t
     {
       mAutoreset=false;
       ROS_WARN_STREAM("Forcing map reset because of user input! Autoreset set to " << mAutoreset);
+      //KSS{
+      //Publish on our topic to specify that a manual reset has been requested
+      pub_reset_.publish(std_msgs::Empty());
+      //}
       Reset();
     }
     else if(sParams == "a")	// autoreset test button

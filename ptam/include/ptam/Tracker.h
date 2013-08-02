@@ -26,7 +26,9 @@
 #include "MiniPatch.h"
 #include "Relocaliser.h"
 #include "ptam/Params.h"
-
+//KSS{
+#include <std_msgs/Empty.h>
+//}
 #include <sstream>
 #include <vector>
 #include <list>
@@ -155,7 +157,10 @@ protected:
     struct Command {std::string sCommand; std::string sParams; };
     std::vector<Command> mvQueuedCommands;
 
-
+    //KSS{
+    ros::NodeHandle nh_;
+    ros::Publisher pub_reset_;
+    //}
 };
 
 #endif
