@@ -112,7 +112,7 @@ void System::imageCallback(const sensor_msgs::ImageConstPtr & img)
       ROS_WARN("no imu match, skipping frame");
       return;
     }
-    if (!transformQuaternion(img->header.frame_id, imu.header, imu.orientation, imu_orientation))
+    if (!transformQuaternion(imu.header.frame_id, imu.header, imu.orientation, imu_orientation))
     {
       return;
     }
