@@ -1,10 +1,16 @@
 <launch>
     <node name="ptam" pkg="ptam" type="ptam" clear_params="true" output="screen">
-	    <remap from="image" to="/ptam/camera/image_raw" />
+	    <remap from="image" to="/chameleon/image_raw" />
         <remap from="pose" to="pose"/>
 	    <rosparam file="$(find ptam)/PtamFixParams.yaml"/>
+        <remap from="vslam/imu" to="imu/data"/>
     </node>
-<!--     <include file="$(find bird_vision)/launch/chameleon.launch" /> -->
-<node name="republish" pkg="image_transport" type="republish" args="compressed in:=/chameleon/camera/image_raw raw out:=/ptam/camera/image_raw" output="screen" />    
+
+ <!-- Chameleon to front facing camera transform -->
+<node name="camera_to_front_static" pkg="tf" type="static_transform_publisher" args="0 0 0 0.5 0.5 0.5 0.5 chameleon pseye 10" />
+
+    <!-- Chameleon to an upright frame transform -->
+<node name="camera_to_drone_static" pkg="tf" type="static_transform_publisher" args="0 0 0 1 0 0 0 chameleon arducopter 10" /> 
+
 </launch>
 

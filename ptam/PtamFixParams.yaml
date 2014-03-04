@@ -1,6 +1,6 @@
 gui: True
-ImageSizeX: 640
-ImageSizeY: 480
+ImageSizeX: 320
+ImageSizeY: 240
 ARBuffer_width: 1200
 ARBuffer_height: 900
 WiggleScale: 0.1

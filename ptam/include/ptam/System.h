@@ -72,6 +72,7 @@ private:
   ImuQueue imu_msgs_;
 
   bool first_frame_;
+  TooN::Matrix<3, 3, double> imu_rotation_;
 
   GLWindow2 *mGLWindow;
   MapViewer *mpMapViewer;

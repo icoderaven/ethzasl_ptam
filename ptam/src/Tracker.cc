@@ -1227,16 +1227,19 @@ void Tracker::ApplyMotionModel()
   else if(vp.MotionModelSource == ptam::PtamParams_MM_IMU)
   {
     //
-    v6Velocity.slice<3,3>() = (mso3LastImu*mso3CurrentImu.inverse()).ln();
-    //                v6Velocity[0] = 0.0;
-    //                v6Velocity[1] = 0.0;
+//    v6Velocity.slice<3,3>() = (mso3LastImu*mso3CurrentImu.inverse()).ln();
+	  //@KSS: Since our IMU messages are also now differential rotation matrices...
+	  v6Velocity.slice<3,3>() = mso3CurrentImu.ln();
+                    v6Velocity[0] = 0.0;
+                    v6Velocity[1] = 0.0;
   }
-  //	std::cout<<"motion:"<<std::endl<<v6Velocity.slice<3,3>()<<std::endl
-  //            <<(mso3CurrentImu.inverse()*mso3LastImu).ln()<<std::endl
-  //            <<(mso3CurrentImu*mso3LastImu.inverse()).ln()<<std::endl
-  //            <<(mso3LastImu.inverse()*mso3CurrentImu).ln()<<std::endl
-  //            <<(mso3LastImu*mso3CurrentImu.inverse()).ln()<<std::endl
-  //;
+  	std::cout<<"motion:"<<std::endl<<v6Velocity<<std::endl
+              <<(mso3CurrentImu.inverse()*mso3LastImu).ln()<<std::endl
+              <<(mso3CurrentImu*mso3LastImu.inverse()).ln()<<std::endl
+              <<(mso3LastImu.inverse()*mso3CurrentImu).ln()<<std::endl
+              <<(mso3LastImu*mso3CurrentImu.inverse()).ln()<<std::endl
+              <<mv6SBIRot.slice<3,3>()<<std::endl
+  ;
   mse3CamFromWorld = SE3<>::exp(v6Velocity) * mse3StartPos;
 };
 
