@@ -28,6 +28,8 @@
 #include "ptam/Params.h"
 //KSS{
 #include <std_msgs/Empty.h>
+#include <tf/tf.h>
+#include <tf/transform_broadcaster.h>
 //}
 #include <sstream>
 #include <vector>
@@ -160,9 +162,14 @@ protected:
     //KSS{
     ros::NodeHandle nh_;
     ros::Publisher pub_reset_;
+    TooN::SO3<double> sbi_rot_, imu_rot_;
+    tf::TransformBroadcaster tf_pub_;
     //}
 };
 
+//KSS{
+tf::Matrix3x3 fromTooN(TooN::Matrix<3, 3, double> a );
+//}
 #endif
 
 

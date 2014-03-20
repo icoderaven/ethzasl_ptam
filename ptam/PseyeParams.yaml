@@ -1,6 +1,6 @@
 gui: True
-ImageSizeX: 640
-ImageSizeY: 480
+ImageSizeX: 320
+ImageSizeY: 240
 ARBuffer_width: 1200
 ARBuffer_height: 900
 WiggleScale: 0.1
@@ -21,7 +21,7 @@ GLWindowMenu_mgvnMenuItemWidth: 90
 GLWindowMenu_mgvnMenuTextOffset: 20
 InitLevel: 1
 MaxKFDistWiggleMult: 1
-MaxPatchesPerFrame: 300
+MaxPatchesPerFrame: 1000
 MaxKF: 60
 parent_frame: world
 TrackingQualityFoundPixels: 50
@@ -32,7 +32,7 @@ MaxStereoInitLoops: 4
 #AutoInit: True
 AutoInitPixel: 20
 TrackingQualityGood: 0.4
-TrackingQualityLost: 0.3
+TrackingQualityLost: 0.35
 
 # ---- 640x 480
 #Cam_fx: 0.500566 #0.500048 #0.495048 #1.08415
@@ -42,9 +42,9 @@ TrackingQualityLost: 0.3
 #Cam_s:  0.985599 #0.98241 # 0.983346 #0.960662
 # -----------------------------------
 # --- 320x240 
-Cam_fx: 0.499892
-Cam_fy: 0.668542
-Cam_cx: 0.5141
-Cam_cy: 0.479657
-Cam_s:  0.982847 
+Cam_fx: 0.843625
+Cam_fy: 1.12026
+Cam_cx: 0.485484
+Cam_cy: 0.512949
+Cam_s:  0.42625 
   

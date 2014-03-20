@@ -99,6 +99,8 @@ void Tracker::Reset()
   mnFrame=0;
   mv6CameraVelocity = Zeros;
   mbJustRecoveredSoUseCoarse = false;
+  imu_rot_ = TooN::SO3<double>();
+  sbi_rot_ = TooN::SO3<double>();
 }
 
 void Tracker::TrackFrame(CVD::Image<CVD::byte> &imFrame, bool bDraw, const TooN::SO3<> & imu){
@@ -1240,9 +1242,40 @@ void Tracker::ApplyMotionModel()
               <<(mso3LastImu*mso3CurrentImu.inverse()).ln()<<std::endl
               <<mv6SBIRot.slice<3,3>()<<std::endl
   ;
+  sbi_rot_ = SO3<>::exp(mv6SBIRot.slice<3,3>()) * sbi_rot_;
+  imu_rot_ = (mso3CurrentImu* imu_rot_);
+  tf::StampedTransform sbi;
+  sbi.frame_id_ = "/world";
+  sbi.child_frame_id_ = "/sbi";
+  sbi.setBasis(fromTooN(sbi_rot_.get_matrix()));
+  sbi.setOrigin(tf::Vector3(0,0,0));
+  tf_pub_.sendTransform(sbi);
+  //And now IMU
+  sbi.frame_id_ = "/world";
+  sbi.child_frame_id_ = "/dimu";
+  sbi.setBasis(fromTooN(imu_rot_.get_matrix()));
+  sbi.setOrigin(tf::Vector3(0,0,0));
+  tf_pub_.sendTransform(sbi);
+  ros::spinOnce();
+
   mse3CamFromWorld = SE3<>::exp(v6Velocity) * mse3StartPos;
 };
 
+tf::Matrix3x3 fromTooN(TooN::Matrix<3, 3, double> a )
+{
+	tf::Matrix3x3 temp;
+	for(int i=0;i<3;i++)
+	{
+		for(int j=0;j<3;j++)
+		{
+			temp[i][j] = a(i,j);
+		}
+	}
+	double y,p,r;
+	temp.getEulerYPR(y,p,r);
+	std::cout<<"\nY "<<y<<" P "<<p<<" R "<<r<<std::endl;
+	return temp;
+}
 
 // The motion model is entirely the tracker's, and is kept as a decaying
 // constant velocity model.
@@ -1251,8 +1284,15 @@ void Tracker::UpdateMotionModel()
   SE3<> se3NewFromOld = mse3CamFromWorld * mse3StartPos.inverse();
   Vector<6> v6Motion = SE3<>::ln(se3NewFromOld);
   Vector<6> v6OldVel = mv6CameraVelocity;
-
-  mv6CameraVelocity = 0.9 * (0.5 * v6Motion + 0.5 * v6OldVel);
+  //@KSS Well, if we're receiving IMU orientatino estimates, we don't really need to smooth rotations
+  const VarParams& vp = PtamParameters::varparams();
+  if(vp.MotionModelSource == ptam::PtamParams_MM_IMU)
+  {
+	  mv6CameraVelocity = 0.95 * (0.9 * v6Motion + 0.1 * v6OldVel);
+  }
+  else{
+	  mv6CameraVelocity = 0.9 * (0.5 * v6Motion + 0.5 * v6OldVel);
+  }
   mdVelocityMagnitude = sqrt(mv6CameraVelocity * mv6CameraVelocity);
 
   // Also make an estimate of this which has been scaled by the mean scene depth.
